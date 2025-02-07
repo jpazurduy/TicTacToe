@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 final class GameViewModel: ObservableObject {
     
@@ -45,6 +46,17 @@ final class GameViewModel: ObservableObject {
         }
         
         self.gameNotification = "it is \(activePlayer.name)'s move"
+        observeData()
+    }
+    
+    private func observeData() {
+        $players
+            .map{ $0.first?.name ?? ""}
+            .assign(to: &$player1Name)
+        
+        $players
+            .map{ $0.last?.name ?? ""}
+            .assign(to: &$player2Name)
     }
     
     func processMove(for position: Int) {
@@ -103,5 +115,11 @@ final class GameViewModel: ObservableObject {
         } else {
             player2Score+=1
         }
+    }
+    
+    private func resetGame() {
+        activePlayer = .player1
+        moves = Array(repeating: nil, count: 9)
+        gameNotification = "it is \(activePlayer.name)'s move"
     }
 }
