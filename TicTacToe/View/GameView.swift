@@ -38,9 +38,9 @@ struct GameView: View {
     @ViewBuilder
     private func scoreView() -> some View {
         HStack {
-            Text("Player 1: 0")
+            Text("\(viewModel.player1Name): \(viewModel.player1Score)")
             Spacer()
-            Text("Player 2: 0")
+            Text("\(viewModel.player2Name): \(viewModel.player2Score)")
         }
         .foregroundStyle(.white)
         .font(.title2)

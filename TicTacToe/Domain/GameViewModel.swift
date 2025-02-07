@@ -58,7 +58,7 @@ final class GameViewModel: ObservableObject {
         // TODO: - Check for win
         if checkForWin(in: moves) {
             // show alert to user
-            
+            increaseScore()
             // increase the score of winner
             print("\(activePlayer.name) has won")
             
@@ -95,5 +95,13 @@ final class GameViewModel: ObservableObject {
         }
         
         return false
+    }
+    
+    private func increaseScore() {
+        if activePlayer == .player1 {
+            player1Score+=1
+        } else {
+            player2Score+=1
+        }
     }
 }
