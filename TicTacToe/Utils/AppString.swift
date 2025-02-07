@@ -6,9 +6,13 @@
 //
 
 struct AppString {
-    static let vsCPU = "vsCPU"
-    static let vsHuman = "vsHuman"
-    static let vsOnline = "vsOnline"
+    static let vsCPU = "vs CPU"
+    static let vsHuman = "vs Human"
+    static let vsOnline = "vs Online"
     static let appName = "Tic Tac Toe"
     static let exit = "Exit"
+    
+    static let player1 = "Player 1"
+    static let player2 = "Player 2"
+    static let cpu = "CPU"
 }

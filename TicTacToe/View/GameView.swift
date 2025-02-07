@@ -9,9 +9,9 @@ import SwiftUI
 
 struct GameView: View {
     @Environment(\.dismiss) var dismiss
-    var mode: GameMode
     
-    var viewModel = GameViewModel()
+    
+    @ObservedObject var viewModel: GameViewModel
     
     @ViewBuilder
     private func closeButton() -> some View {
@@ -33,17 +33,15 @@ struct GameView: View {
             .padding(.bottom, 20)
 
         }
-        .background(.green)
     }
     
     @ViewBuilder
     private func scoreView() -> some View {
         HStack {
-            Text("Player 1")
+            Text("Player 1: 0")
             Spacer()
-            Text("Player 2")
+            Text("Player 2: 0")
         }
-        .background(.gray)
         .foregroundStyle(.white)
         .font(.title2)
         .fontWeight(.semibold)
@@ -51,9 +49,10 @@ struct GameView: View {
     
     @ViewBuilder
     private func gameStatus() -> some View {
-        Text("Once move")
+        Text("We are in \(viewModel.gameMode.name)")
             .font(.title2)
-            .foregroundStyle(.pink)
+            .foregroundStyle(.white)
+            .fontWeight(.bold)
     }
     
     @ViewBuilder
@@ -61,12 +60,14 @@ struct GameView: View {
         VStack {
             LazyVGrid(columns: viewModel.colums, spacing: 10) {
                 ForEach(0..<9) { index in
-                    Text("hello \(index)")
+                    ZStack {
+                        BoardCircleView(geometryReader: geometryProxy)
+                        BoardIndicatorView(imageName: "applelogo")
+                    }
                 }
             }
         }
         .padding(.bottom, 10)
-        .background(.white)
     }
     
     @ViewBuilder
@@ -87,7 +88,7 @@ struct GameView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.horizontal, 16)
-            .background(.yellow)
+            .background(.indigo)
         }
     }
 
@@ -97,5 +98,5 @@ struct GameView: View {
 }
 
 #Preview {
-    GameView(mode: GameMode.vsCPU)
+    GameView(viewModel: GameViewModel(gameMode: .vsCPU))
 }

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7F6003652D49818100C26982 /* TestSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6003642D49818100C26982 /* TestSwiftUI.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		7FD8A54F2D42959E00263250 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7F6003642D49818100C26982 /* TestSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSwiftUI.swift; sourceTree = "<group>"; };
 		7FD8A53E2D42959B00263250 /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FD8A54E2D42959E00263250 /* TicTacToeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicTacToeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FD8A5582D42959E00263250 /* TicTacToeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicTacToeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +80,7 @@
 		7FD8A5352D42959B00263250 = {
 			isa = PBXGroup;
 			children = (
+				7F6003642D49818100C26982 /* TestSwiftUI.swift */,
 				7FD8A5402D42959B00263250 /* TicTacToe */,
 				7FD8A5512D42959E00263250 /* TicTacToeTests */,
 				7FD8A55B2D42959E00263250 /* TicTacToeUITests */,
@@ -236,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F6003652D49818100C26982 /* TestSwiftUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

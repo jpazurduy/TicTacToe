@@ -16,8 +16,8 @@ struct BoardCircleView: View {
     
     var body: some View {
         Circle()
-            .fill(.red)
-            .frame(width: geometryReader.size.width / sizeDivider - padding, height: geometryReader.size.height / sizeDivider - padding)
+            .fill(.white)
+            .frame(width: geometryReader.size.width / sizeDivider - padding, height: geometryReader.size.width / sizeDivider - padding)
     }
 }
 

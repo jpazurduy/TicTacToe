@@ -58,7 +58,7 @@ struct HomeView: View {
     var body: some View {
         main()
             .fullScreenCover(item: $gameMode) { gameMode in
-                GameView(mode: gameMode)
+                GameView(viewModel: GameViewModel(gameMode: gameMode))
             }
     }
 }
