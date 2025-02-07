@@ -14,7 +14,7 @@ final class GameViewModel: ObservableObject {
                                   GridItem(.flexible())
                                 ]
     
-    
+    @Published private(set) var moves:[GameMove?] = Array(repeating: nil, count: 9)
     @Published private(set) var player1Score = 0
     @Published private(set) var player2Score = 0
     
@@ -38,5 +38,19 @@ final class GameViewModel: ObservableObject {
             case .vsOnline:
                 self.players = [.player1, .player2]
         }
+    }
+    
+    func processMove(for position: Int) {
+        // it is the positionn occupaied
+        if isSquareOccupaid(in: moves, for: position) { return }
+        
+        moves[position] = GameMove(player: activePlayer, boardIndex: position)
+        
+        
+        activePlayer = players.first(where: {$0 != activePlayer})!
+    }
+    
+    func isSquareOccupaid(in moves: [GameMove?], for index: Int) -> Bool {
+        moves.contains(where: { $0?.boardIndex == index })
     }
 }
