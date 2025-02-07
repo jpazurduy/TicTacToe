@@ -49,7 +49,7 @@ struct GameView: View {
     
     @ViewBuilder
     private func gameStatus() -> some View {
-        Text("We are in \(viewModel.gameMode.name)")
+        Text(viewModel.gameNotification)
             .font(.title2)
             .foregroundStyle(.white)
             .fontWeight(.bold)
@@ -62,7 +62,10 @@ struct GameView: View {
                 ForEach(0..<9) { index in
                     ZStack {
                         BoardCircleView(geometryReader: geometryProxy)
-                        BoardIndicatorView(imageName: "applelogo")
+                        BoardIndicatorView(imageName: viewModel.moves[index]?.indicator ?? "")
+                    }
+                    .onTapGesture {
+                        viewModel.processMove(for: index)
                     }
                 }
             }
