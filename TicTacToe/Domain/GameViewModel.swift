@@ -29,8 +29,12 @@ final class GameViewModel: ObservableObject {
     
     @Published private(set) var activePlayer: Player = .player1
     
+    @Published private(set) var alertItem: AlertItem?
+    
     @Published var gameMode: GameMode
     @Published private var players: [Player] = []
+    
+    @Published var showAlert: Bool = false
     
     
     init(gameMode: GameMode) {
@@ -70,6 +74,8 @@ final class GameViewModel: ObservableObject {
         // TODO: - Check for win
         if checkForWin(in: moves) {
             // show alert to user
+            showAlert(for: .finished)
+            
             increaseScore()
             // increase the score of winner
             print("\(activePlayer.name) has won")
@@ -80,6 +86,8 @@ final class GameViewModel: ObservableObject {
         
         if checkForDraw(in: moves) {
             // show alert to user
+            showAlert(for: .draw)
+            
             print("it is draw")
             return
         }
@@ -116,8 +124,21 @@ final class GameViewModel: ObservableObject {
             player2Score+=1
         }
     }
+    private func showAlert(for state: GameState) {
+        gameNotification = state.name
+        
+        switch state {
+            case .finished, .draw, .waitingForPlayer:
+                let title = state == .finished ? "\(activePlayer.name) has won" : state.name
+                alertItem = AlertItem(title: title, message: AppString.tryRematch)
+            case .quit:
+                let title = state.name
+                alertItem = AlertItem(title: title, message: "", buttonTitle: "OK")
+        }
+        showAlert = true
+    }
     
-    private func resetGame() {
+    func resetGame() {
         activePlayer = .player1
         moves = Array(repeating: nil, count: 9)
         gameNotification = "it is \(activePlayer.name)'s move"
