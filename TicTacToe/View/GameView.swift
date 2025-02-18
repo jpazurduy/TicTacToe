@@ -71,6 +71,7 @@ struct GameView: View {
             }
         }
         .padding(.bottom, 10)
+        .disabled(viewModel.isGameBoardDisable)
     }
     
     @ViewBuilder

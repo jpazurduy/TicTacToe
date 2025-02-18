@@ -26,6 +26,7 @@ final class GameViewModel: ObservableObject {
     
     @Published private(set) var player1Name = ""
     @Published private(set) var player2Name = ""
+    @Published private(set) var isGameBoardDisable = false
     
     @Published private(set) var activePlayer: Player = .player1
     
@@ -66,7 +67,7 @@ final class GameViewModel: ObservableObject {
     func processMove(for position: Int) {
         print(activePlayer.name)
         // it is the positionn occupaied
-        if isSquareOccupaid(in: moves, for: position) { return }
+        if isSquareOccupied(in: moves, for: position) { return }
         
         moves[position] = GameMove(player: activePlayer, boardIndex: position)
         
@@ -94,11 +95,68 @@ final class GameViewModel: ObservableObject {
         // TODO: - Continue the game
         
         activePlayer = players.first(where: {$0 != activePlayer})!
+        if gameMode == .vsCPU && activePlayer == .cpu {
+            isGameBoardDisable = true
+            computerMove()
+        }
+        
         self.gameNotification = "it is \(activePlayer.name)'s move"
     }
     
-    private func isSquareOccupaid(in moves: [GameMove?], for index: Int) -> Bool {
-        moves.contains(where: { $0?.boardIndex == index })
+    private func computerMove() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [self] in
+            processMove(for: getAIMovePosition(in: moves))
+            isGameBoardDisable = false
+        }
+    }
+    
+    private func getAIMovePosition(in moves: [GameMove?]) -> Int {
+        let centerSquare = 4
+        
+        // if we can win
+        let computerMoves = moves.compactMap { $0 }.filter{ $0.player == .cpu }
+        let computerPositions = Set(computerMoves.map {$0.boardIndex} )
+        
+        if let position = getTheWinningSpot(for: computerPositions) {
+            return position
+        }
+                                           
+        // block the player
+        let humanMoves = moves.compactMap { $0 }.filter{ $0.player == .player1 }
+        let humanPositions = Set(humanMoves.map {$0.boardIndex} )
+        
+        if let position = getTheWinningSpot(for: humanPositions) {
+            return position
+        }
+                                           
+        // take the middle
+        if !isSquareOccupied(in: moves, for: centerSquare) {
+            return centerSquare
+        }
+        
+        // take a random spot
+        var movePosition = Int.random(in: 0..<9)
+        while isSquareOccupied(in: moves, for: movePosition) {
+            movePosition = Int.random(in: 0..<9)
+        }
+        return movePosition
+    }
+    
+    private func getTheWinningSpot(for positions: Set<Int>) -> Int? {
+        for pattern in winPatterns {
+            let winPosition = pattern.subtracting(positions)
+            
+            if winPosition.count == 1 &&  !isSquareOccupied(in: moves, for: winPosition.first!) {
+                return winPosition.first!
+            }
+            
+        }
+        return nil
+    }
+    
+    private func isSquareOccupied(in moves: [GameMove?], for index: Int) -> Bool {
+        let result = moves.contains(where: { $0?.boardIndex == index })
+        return result
     }
     
     private func checkForDraw(in moves: [GameMove?]) -> Bool {
@@ -134,6 +192,7 @@ final class GameViewModel: ObservableObject {
             case .quit:
                 let title = state.name
                 alertItem = AlertItem(title: title, message: "", buttonTitle: "OK")
+                isGameBoardDisable = true
         }
         showAlert = true
     }
