@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7F6003652D49818100C26982 /* TestSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6003642D49818100C26982 /* TestSwiftUI.swift */; };
+		7FE2560C2D6D772A00CA56DB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FE2560B2D6D772A00CA56DB /* GoogleService-Info.plist */; };
+		7FE256142D6D7ABF00CA56DB /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7FE256132D6D7ABF00CA56DB /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +34,7 @@
 		7FD8A53E2D42959B00263250 /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FD8A54E2D42959E00263250 /* TicTacToeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicTacToeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FD8A5582D42959E00263250 /* TicTacToeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicTacToeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FE2560B2D6D772A00CA56DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -57,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FE256142D6D7ABF00CA56DB /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +89,7 @@
 				7FD8A5512D42959E00263250 /* TicTacToeTests */,
 				7FD8A55B2D42959E00263250 /* TicTacToeUITests */,
 				7FD8A53F2D42959B00263250 /* Products */,
+				7FE2560D2D6D773500CA56DB /* ConfigFiles */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +101,14 @@
 				7FD8A5582D42959E00263250 /* TicTacToeUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7FE2560D2D6D773500CA56DB /* ConfigFiles */ = {
+			isa = PBXGroup;
+			children = (
+				7FE2560B2D6D772A00CA56DB /* GoogleService-Info.plist */,
+			);
+			path = ConfigFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,6 +131,7 @@
 			);
 			name = TicTacToe;
 			packageProductDependencies = (
+				7FE256132D6D7ABF00CA56DB /* FirebaseFirestore */,
 			);
 			productName = TicTacToe;
 			productReference = 7FD8A53E2D42959B00263250 /* TicTacToe.app */;
@@ -201,6 +215,9 @@
 			);
 			mainGroup = 7FD8A5352D42959B00263250;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7FE2560E2D6D788700CA56DB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7FD8A53F2D42959B00263250 /* Products */;
 			projectDirPath = "";
@@ -218,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FE2560C2D6D772A00CA56DB /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,6 +579,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7FE2560E2D6D788700CA56DB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7FE256132D6D7ABF00CA56DB /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7FE2560E2D6D788700CA56DB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7FD8A5362D42959B00263250 /* Project object */;
 }
