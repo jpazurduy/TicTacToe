@@ -20,7 +20,7 @@ final class OnlineGameRepository: ObservableObject {
     private var cancelables: Set<AnyCancellable> = []
     
     
-    private func joinGame() async {
+     func joinGame() async {
         if let gamesToJoin: Game = await getGame() {
             self.game = gamesToJoin
             self.game.player2ID = localPlayerID
