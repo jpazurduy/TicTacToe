@@ -17,7 +17,7 @@ protocol FirebaseRepositoryProtocol {
     
     func deleteDocument(with id: String, collection: FSCollectionReference)
     
-    func save<T: EncodableIdenfiable>(data: T, to collection: FSCollectionReference) throws
+    func saveDocument<T: EncodableIdenfiable>(data: T, to collection: FSCollectionReference) throws
 }
 
 class FirebaseRepository: FirebaseRepositoryProtocol {
@@ -64,7 +64,7 @@ class FirebaseRepository: FirebaseRepositoryProtocol {
         firebaseReference(collection).document(id).delete()
     }
     
-    func save<T: EncodableIdenfiable>(data: T, to collection: FSCollectionReference) throws{
+    func saveDocument<T: EncodableIdenfiable>(data: T, to collection: FSCollectionReference) throws {
         let id = data.id as? String ?? UUID().uuidString
         
         try firebaseReference(collection).document(id).setData(from: data.self)
