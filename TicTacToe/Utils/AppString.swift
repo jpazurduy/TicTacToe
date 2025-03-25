@@ -23,6 +23,7 @@ struct AppString {
     static let waitingForPlayer = "Waiting for a player to join"
     
     static let tryRematch = "Try rematch"
+    static let yourMove = "It is your move!"
 }
 
 struct Constant {

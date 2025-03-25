@@ -38,7 +38,9 @@ final class GameViewModel: ObservableObject {
     
     @Published var showAlert: Bool = false
     @Published private var onlineGame: Game?
+    @Published private var showLoadign = false
     
+    private var cancelables: Set<AnyCancellable> = []
     
     init(gameMode: GameMode) {
         self.gameMode = gameMode
@@ -69,11 +71,88 @@ final class GameViewModel: ObservableObject {
         onlineRepositrory.$game
             .map { $0 }
             .assign(to: &$onlineGame)
+        
+        $onlineGame
+            .map{ $0?.moves ?? Array(repeating: nil, count: 9)}
+            .assign(to: &$moves)
+        
+        $onlineGame
+            .map{ $0?.player1Score ?? 0}
+            .assign(to: &$player1Score)
+        
+        $onlineGame
+            .map{ $0?.player2Score ?? 0}
+            .assign(to: &$player2Score)
+        
+        $onlineGame
+            .drop(while: { $0 == nil })
+            .map{ $0?.player2ID == ""}
+            .assign(to: &$showLoadign)
+        
+        $onlineGame
+            .drop(while: { $0 == nil })
+            .sink { updateValue in
+                self.syncOnlineWithLocal(onlineGame: updateValue)
+                
+            }
+            .store(in: &cancelables)
+    }
+    
+    private func syncOnlineWithLocal(onlineGame: Game?) {
+        guard let game = onlineGame else {
+            print("The game is nil")
+            return
+        }
+        
+        if game.winningPlayerID == "0" {
+            // draw
+            // show alert
+        } else if game.winningPlayerID != "" {
+            // win register
+            // show alert
+        }
+        
+        // set disalble state
+        isGameBoardDisable = game.player2ID == "" ? true : localPlayerID != game.activePlayerID
+        
+        
+        // set active player
+        setActivePlayerAndNotification(from: game)
+        
+        // set notification
+        if game.player2ID == "" {
+            gameNotification = AppString.waitingForPlayer
+        }
+        
+    }
+    
+    private func setActivePlayerAndNotification(from game: Game) {
+        if localPlayerID == game.player1ID {
+            // we are player 1
+            
+            if localPlayerID == game.activePlayerID {
+                self.activePlayer = .player1
+                
+                // notification
+                self.gameNotification = AppString.yourMove
+            } else {
+                // notification
+                self.gameNotification = "It is \(activePlayer.name)'s move"
+            }
+        } else {
+            // we are player 2
+            if localPlayerID == game.activePlayerID {
+                self.activePlayer = .player2
+                self.gameNotification = AppString.yourMove
+            } else {
+                self.gameNotification = "It is \(activePlayer.name)'s move"
+            }
+        }
     }
     
     private func startOnlineGame() {
-        gameNotification = AppString.waitingForPlayer
-        // Show loading spin wheel
+//        gameNotification = AppString.waitingForPlayer
+//        // Show loading spin wheel
         Task {
             await onlineRepositrory.joinGame()
         }
