@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 final class GameViewModel: ObservableObject {
-    let onlineRepositrory = OnlineGameRepository()
+    var onlineRepositrory = OnlineGameRepository()
     
     let colums: [GridItem] = [ GridItem(.flexible()),
                                GridItem(.flexible()),
@@ -38,7 +38,7 @@ final class GameViewModel: ObservableObject {
     
     @Published var showAlert: Bool = false
     @Published private var onlineGame: Game?
-    @Published private var showLoadign = false
+    @Published var showLoadign = false
     
     private var cancelables: Set<AnyCancellable> = []
     
@@ -100,16 +100,14 @@ final class GameViewModel: ObservableObject {
     
     private func syncOnlineWithLocal(onlineGame: Game?) {
         guard let game = onlineGame else {
-            print("The game is nil")
+            showAlert(for: .quit)
             return
         }
         
         if game.winningPlayerID == "0" {
-            // draw
-            // show alert
+            self.showAlert(for: .draw)
         } else if game.winningPlayerID != "" {
-            // win register
-            // show alert
+            self.showAlert(for: .finished)
         }
         
         // set disalble state
@@ -173,7 +171,8 @@ final class GameViewModel: ObservableObject {
             
             increaseScore()
             // increase the score of winner
-            print("\(activePlayer.name) has won")
+            // update online game
+            updateOnlineGame(gameProcess: .win)
             
             return
         }
@@ -183,7 +182,8 @@ final class GameViewModel: ObservableObject {
             // show alert to user
             showAlert(for: .draw)
             
-            print("it is draw")
+            // update online game
+            updateOnlineGame(gameProcess: .draw)
             return
         }
         // TODO: - Continue the game
@@ -194,7 +194,39 @@ final class GameViewModel: ObservableObject {
             computerMove()
         }
         
+        // update online game
+        updateOnlineGame(gameProcess: .move)
         self.gameNotification = "it is \(activePlayer.name)'s move"
+    }
+    
+    private func updateOnlineGame(gameProcess: GameProcess) {
+        guard var tempGame = onlineGame else { return }
+        
+        isGameBoardDisable = localPlayerID != tempGame.activePlayerID
+        
+        tempGame.activePlayerID = tempGame.activePlayerID == tempGame.player1ID ? tempGame.player2ID : tempGame.player1ID
+        
+        tempGame.player1Score = player1Score
+        tempGame.player2Score = player2Score
+        
+        switch gameProcess {
+            case .win:
+                tempGame.winningPlayerID = localPlayerID
+            case .draw:
+                tempGame.winningPlayerID = "0"
+                tempGame.activePlayerID = tempGame.player1ID
+            case .reset:
+                tempGame.winningPlayerID = ""
+                tempGame.activePlayerID = tempGame.player1ID
+            case .move:
+                break
+        }
+        
+        tempGame.moves = moves
+        
+        Task {
+            await onlineRepositrory.updateGame(tempGame)
+        }
     }
     
     private func computerMove() {
@@ -294,6 +326,16 @@ final class GameViewModel: ObservableObject {
     func resetGame() {
         activePlayer = .player1
         moves = Array(repeating: nil, count: 9)
-        gameNotification = "it is \(activePlayer.name)'s move"
+        
+        
+        if gameMode == .vsOnline {
+            updateOnlineGame(gameProcess: .reset)
+        } else {
+            gameNotification = "it is \(activePlayer.name)'s move"
+        }
+    }
+    
+    func quitGame() {
+        onlineRepositrory.quitGame()
     }
 }

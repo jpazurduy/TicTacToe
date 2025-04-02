@@ -19,6 +19,7 @@ struct GameView: View {
             Spacer()
             Button {
                 dismiss()
+                viewModel.quitGame()
             } label: {
                 Text(AppString.exit)
                     .font(.title3)
@@ -49,10 +50,19 @@ struct GameView: View {
     
     @ViewBuilder
     private func gameStatus() -> some View {
-        Text(viewModel.gameNotification)
-            .font(.title2)
-            .foregroundStyle(.white)
-            .fontWeight(.bold)
+        VStack {
+            Text(viewModel.gameNotification)
+                .font(.title2)
+                .foregroundStyle(.white)
+                .fontWeight(.bold)
+            
+            if viewModel.showLoadign {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .tint(.white)
+            }
+        }
+        
     }
     
     @ViewBuilder

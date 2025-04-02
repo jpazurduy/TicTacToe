@@ -76,7 +76,7 @@ final class OnlineGameRepository: ObservableObject {
         
     }
     
-    private func updateGame(_ game: Game) async {
+    func updateGame(_ game: Game) async {
         // TODO: - Save document
         do {
             try firebaseRepository.saveDocument(data: game, to: .Game)
@@ -86,7 +86,7 @@ final class OnlineGameRepository: ObservableObject {
         
     }
     
-    private func quitGame() {
+    func quitGame() {
         guard game != nil else {
             return
         }
