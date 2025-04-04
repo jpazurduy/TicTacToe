@@ -23,6 +23,9 @@ protocol FirebaseRepositoryProtocol {
 class FirebaseRepository: FirebaseRepositoryProtocol {
     
     func getDocuments<T: Codable>(from collection: FSCollectionReference, for playerID: String) async throws -> [T]? {
+        
+        print("sending real")
+        
         let snapshot = try await firebaseReference(collection)
             .whereField(Constant.player2ID, isEqualTo: "")
             .whereField(Constant.player1ID, isNotEqualTo: playerID).getDocuments()

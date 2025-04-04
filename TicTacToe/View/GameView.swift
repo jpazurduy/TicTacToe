@@ -119,5 +119,5 @@ struct GameView: View {
 }
 
 #Preview {
-    GameView(viewModel: GameViewModel(gameMode: .vsCPU))
+    GameView(viewModel: GameViewModel(gameMode: .vsCPU, onlineRepositrory: OnlineGameRepository()))
 }

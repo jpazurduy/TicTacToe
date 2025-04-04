@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 final class GameViewModel: ObservableObject {
-    var onlineRepositrory = OnlineGameRepository()
+    var onlineRepositrory: OnlineGameRepository
     
     let colums: [GridItem] = [ GridItem(.flexible()),
                                GridItem(.flexible()),
@@ -42,8 +42,9 @@ final class GameViewModel: ObservableObject {
     
     private var cancelables: Set<AnyCancellable> = []
     
-    init(gameMode: GameMode) {
+    init(gameMode: GameMode, onlineRepositrory: OnlineGameRepository) {
         self.gameMode = gameMode
+        self.onlineRepositrory = onlineRepositrory
         
         switch gameMode {
             case .vsCPU:
